@@ -17,7 +17,7 @@ public class Main {
 //        String filename = args[0];
 //        String method = args[1];
 
-        String filename = "E:\\Java Projects\\TreeBasedSearch\\src\\main\\java\\treebasedsearch\\RobotNav-test.txt";
+        String filename = "D:\\Java Projects\\shortestPathAlgorithms\\src\\main\\java\\treebasedsearch\\RobotNav-test.txt";
         String method = "DFS";
 
 

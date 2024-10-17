@@ -103,7 +103,7 @@ public class DFS {
             int width = wall[2];
             int height = wall[3];
 
-            if (currentRow >= startRow && currentRow <= startRow + width && currentCol >= startCol && currentCol <= startCol + height) {
+            if (currentRow >= startRow && currentRow < startRow + width && currentCol >= startCol && currentCol < startCol + height) {
                 return false;
             }
         }
@@ -122,7 +122,11 @@ public class DFS {
 
     private List<int[]> getNeighbors(int[] position) {
         // RIGHT, DOWN, LEFT, UP
-        int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+//        int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+        // UP, LEFT, DOWN, RIGHT
+        int[][] directions = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
+
 
         int row = position[1];
         int col = position[0];
