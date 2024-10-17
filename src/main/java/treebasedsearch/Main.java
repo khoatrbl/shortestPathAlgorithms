@@ -8,17 +8,17 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Usage: java search <filename> <method>");
-            System.exit(1);
-        }
+//        if (args.length != 2) {
+//            System.out.println("Usage: java search <filename> <method>");
+//            System.exit(1);
+//        }
 
 //         Extract filename and method
-        String filename = args[0];
-        String method = args[1];
+//        String filename = args[0];
+//        String method = args[1];
 
-//        String filename = "E:\\Java Projects\\TreeBasedSearch\\src\\main\\java\\treebasedsearch\\RobotNav-test.txt";
-//        String method = "DFS";
+        String filename = "E:\\Java Projects\\TreeBasedSearch\\src\\main\\java\\treebasedsearch\\RobotNav-test.txt";
+        String method = "DFS";
 
 
         // Read the input file
@@ -35,22 +35,23 @@ public class Main {
 
             switch (method.toUpperCase()) {
                 case "DFS":
-                    depthFirstSearch(gridDimension, initialPosition, goalStates, walls);
+                    System.out.println(filename + " " + method);
+                    search.depthFirstSearch(gridDimension, initialPosition, goalStates, walls);
                     break;
                 case "BFS":
-                    breadthFirstSearch(gridDimension, initialPosition, goalStates, walls);
+                    System.out.println(filename + " " + method);
+                    search.breadthFirstSearch(gridDimension, initialPosition, goalStates, walls);
                     break;
                 case "GBFS":
-                    greedyBestFirstSearch(gridDimension, initialPosition, goalStates, walls);
                     break;
                 case "AS":
-                    aStarSearch(gridDimension, initialPosition, goalStates, walls);
+
                     break;
                 case "CUS1":
-                    customSearch1(gridDimension, initialPosition, goalStates, walls);
+
                     break;
                 case "CUS2":
-                    customSearch2(gridDimension, initialPosition, goalStates, walls);
+
                     break;
                 default:
                     System.out.println("Error: Unknown method '" + method + "'");
@@ -116,34 +117,5 @@ public class Main {
         return walls;
     }
 
-    // Implement the search algorithms
-    private static void depthFirstSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
-        // DFS search logic here
-        System.out.println("Running DFS...");
-    }
 
-    private static void breadthFirstSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
-        // BFS search logic here
-        System.out.println("Running BFS...");
-    }
-
-    private static void greedyBestFirstSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
-        // GBFS search logic here
-        System.out.println("Running GBFS...");
-    }
-
-    private static void aStarSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
-        // A* search logic here
-        System.out.println("Running A*...");
-    }
-
-    private static void customSearch1(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
-        // Custom search 1 logic here
-        System.out.println("Running Custom Search 1...");
-    }
-
-    private static void customSearch2(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
-        // Custom search 2 logic here
-        System.out.println("Running Custom Search 2...");
-    }
 }

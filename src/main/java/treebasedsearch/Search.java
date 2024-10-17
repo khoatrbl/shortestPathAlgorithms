@@ -1,6 +1,7 @@
 package treebasedsearch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Search {
@@ -110,49 +111,7 @@ public class Search {
         }
     }
 
-    private boolean isValidNeighbor(int[] position) {
-        int currentRow = position[1];
-        int currentCol = position[0];
 
-        if (currentRow < 0 || currentRow >= grid.length || currentCol < 0 || currentCol >= grid[0].length) {
-            return false;
-        }
-
-        // check if position is in a wall
-        for (int[] wall : getWalls()) {
-            int startRow = wall[1];
-            int startCol = wall[0];
-            int width = wall[2];
-            int height = wall[3];
-
-            if (currentRow >= startRow && currentRow < startRow + width && currentCol >= startCol && currentCol < startCol + height) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public List<int[]> getNeighbors(int[] position) {
-        int row = position[1];
-        int col = position[0];
-
-        List<int[]> neighbors = new ArrayList<>();
-        neighbors.add(new int[]{col, row - 1});
-        neighbors.add(new int[]{col - 1, row});
-        neighbors.add(new int[]{col, row + 1});
-        neighbors.add(new int[]{col + 1, row});
-
-        List<int[]> validNeighbors = new ArrayList<>();
-
-        for (int[] neighbor : neighbors) {
-            if (isValidNeighbor(neighbor)) {
-                validNeighbors.add(neighbor);
-            }
-        }
-
-
-        return validNeighbors;
-    }
 
     public void printGrid() {
         for (int i = 0; i < grid.length; i++) {
@@ -161,6 +120,61 @@ public class Search {
             }
             System.out.println();
         }
+    }
+
+    // Implement the search algorithms
+    public void depthFirstSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
+        DFS dfs = new DFS(initialPosition, goalStates, grid, walls);
+
+        List<String> moves = dfs.search();
+        List<int[]> path = dfs.getPath();
+
+        if (moves != null) {
+            System.out.println("Goal: " + Arrays.toString(path.getLast()));
+            System.out.println("Number of steps: " + moves.size());
+            for (String move : moves) {
+                System.out.print(move + " ");
+            }
+        } else {
+            System.out.println("No path found.");
+        }
+    }
+
+    public void breadthFirstSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
+        BFS bfs = new BFS(initialPosition, goalStates, grid, walls);
+
+        List<String> moves = bfs.search();
+        List<int[]> path = bfs.getPath();
+
+        if (moves != null) {
+            System.out.println("Goal: " + Arrays.toString(path.getLast()));
+            System.out.println("Number of steps: " + moves.size());
+            for (String move : moves) {
+                System.out.print(move + " ");
+            }
+        } else {
+            System.out.println("No path found.");
+        }
+    }
+
+    public void greedyBestFirstSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
+        // GBFS search logic here
+        System.out.println("Running GBFS...");
+    }
+
+    public void aStarSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
+        // A* search logic here
+        System.out.println("Running A*...");
+    }
+
+    public void customSearch1(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
+        // Custom search 1 logic here
+        System.out.println("Running Custom Search 1...");
+    }
+
+    public void customSearch2(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
+        // Custom search 2 logic here
+        System.out.println("Running Custom Search 2...");
     }
 
 
