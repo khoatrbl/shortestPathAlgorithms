@@ -135,6 +135,10 @@ public class Search {
             for (String move : moves) {
                 System.out.print(move + " ");
             }
+            System.out.println();
+            for (int[] p : path) {
+                System.out.print(Arrays.toString(p) + " ");
+            }
         } else {
             System.out.println("No path found.");
         }
