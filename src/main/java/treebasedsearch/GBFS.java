@@ -2,34 +2,42 @@ package treebasedsearch;
 
 import java.util.*;
 
-public class DFS {
+public class GBFS {
     private List<int[]> path;
 
-    private int[] currentPosition;
+    private int[][] grid;
+    private int[] initialPosition;
     private List<int[]> goalStates;
-    private String[][] grid;
     private List<int[]> walls;
 
-    public DFS(int[] currentPosition, List<int[]> goalStates, String[][] grid, List<int[]> walls) {
-        this.currentPosition = currentPosition;
-        this.goalStates = goalStates;
+    public GBFS(int[][] grid, int[] initialPosition, List<int[]> goalStates, List<int[]> walls) {
         this.grid = grid;
+        this.initialPosition = initialPosition;
+        this.goalStates = goalStates;
         this.walls = walls;
+
         this.path = new ArrayList<>();
     }
 
+    private int calculateManhattanDistance(int[] nodeA, int[] nodeB) {
+        int result = 0;
+        result = Math.abs(nodeA[1] - nodeB[1]) + Math.abs(nodeA[0] - nodeB[0]);
+
+        return result;
+    }
+
     public List<String> search() {
-        Stack<int[]> nextTiles = new Stack<>();
-        nextTiles.add(currentPosition);
+        Queue<int[]> nextTiles = new LinkedList<>();
+        nextTiles.add(initialPosition);
 
         List<int[]> visitedTiles = new ArrayList<>();
-        visitedTiles.add(currentPosition);
+        visitedTiles.add(initialPosition);
 
         Map<String, int[]> parentMap = new HashMap<>();
-        parentMap.put(Arrays.toString(currentPosition), null);
+        parentMap.put(Arrays.toString(initialPosition), null);
 
-        while (!nextTiles.isEmpty()) {
-            int[] currentTile = nextTiles.pop();
+        while(!nextTiles.isEmpty()) {
+            int[] currentTile = nextTiles.poll();
             int currentRow = currentTile[1];
             int currentCol = currentTile[0];
 
@@ -43,15 +51,10 @@ public class DFS {
             List<int[]> neighbors = getNeighbors(currentTile);
 
             for (int[] neighbor : neighbors) {
-                if (!hasVisited(visitedTiles, neighbor)) {
-                    nextTiles.push(neighbor);
-                    visitedTiles.add(neighbor);
-                    parentMap.put(Arrays.toString(neighbor) , currentTile);
-                }
-            }
-        }
 
-        return null;
+            }
+
+        }
     }
 
     private List<int[]> reconstructPath(Map<String,int[]> parentMap, int[] goal) {
@@ -150,5 +153,8 @@ public class DFS {
     public List<int[]> getPath() {
         return path;
     }
+
+
+
 
 }
