@@ -12,13 +12,13 @@ public class Main {
 //            System.out.println("Usage: java search <filename> <method>");
 //            System.exit(1);
 //        }
-
-//         Extract filename and method
+//
+//        //Extract filename and method
 //        String filename = args[0];
 //        String method = args[1];
 
-        String filename = "D:\\Java Projects\\shortestPathAlgorithms\\src\\main\\java\\treebasedsearch\\RobotNav-test.txt";
-        String method = "DFS";
+        String filename = "E:\\Java Projects\\TreeBasedSearch\\src\\main\\java\\treebasedsearch\\RobotNav-test.txt";
+        String method = "cus1";
 
 
         // Read the input file
@@ -36,19 +36,23 @@ public class Main {
             switch (method.toUpperCase()) {
                 case "DFS":
                     System.out.println(filename + " " + method);
-                    search.depthFirstSearch(gridDimension, initialPosition, goalStates, walls);
+                    search.depthFirstSearch(goalStates, walls);
                     break;
                 case "BFS":
                     System.out.println(filename + " " + method);
-                    search.breadthFirstSearch(gridDimension, initialPosition, goalStates, walls);
+                    search.breadthFirstSearch(goalStates, walls);
                     break;
                 case "GBFS":
+                    System.out.println(filename + " " + method);
+                    search.greedyBestFirstSearch(goalStates, walls);
                     break;
                 case "AS":
-
+                    System.out.println(filename + " " + method);
+                    search.aStarSearch(goalStates, walls);
                     break;
                 case "CUS1":
-
+                    System.out.println(filename + " " + method);
+                    search.customSearch1(goalStates, walls);
                     break;
                 case "CUS2":
 

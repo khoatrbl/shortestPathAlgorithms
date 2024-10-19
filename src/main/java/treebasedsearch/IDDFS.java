@@ -2,71 +2,73 @@ package treebasedsearch;
 
 import java.util.*;
 
-public class GBFS {
+/* Custom 1: Iterative Deepening Depth First Search (IDDFS)
+  Reference: <a href="https://www.geeksforgeeks.org/iterative-deepening-searchids-iterative-deepening-depth-first-searchiddfs/">...</a> */
+public class IDDFS {
     private List<int[]> path;
+    // To store the parent of each node to reconstruct the path
+    private Map<String, int[]> parentMap;
 
     private String[][] grid;
     private int[] initialPosition;
     private List<int[]> goalStates;
     private List<int[]> walls;
 
-    public GBFS(String[][] grid, int[] initialPosition, List<int[]> goalStates, List<int[]> walls) {
+    public IDDFS(String[][] grid, int[] initialPosition, List<int[]> goalStates, List<int[]> walls) {
         this.grid = grid;
         this.initialPosition = initialPosition;
         this.goalStates = goalStates;
         this.walls = walls;
-
         this.path = new ArrayList<>();
+        this.parentMap = new HashMap<>();
     }
-
-    private int calculateManhattanDistance(int[] node) {
-        int minDistance = Integer.MAX_VALUE;
-
-        // Iterate over all goals and calculate the Manhattan distance to each
-        for (int[] goal : goalStates) {
-            int distance = Math.abs(goal[1] - node[1]) + Math.abs(goal[0] - node[0]);
-            if (distance < minDistance) {
-                minDistance = distance;
-            }
-        }
-
-        return minDistance;  // Return the smallest distance to any goal
-    }
-
 
     public List<String> search() {
-        List<int[]> visitedTiles = new ArrayList<>();
+        int depth = 0;
 
-        Queue<int[]> nextTiles = new PriorityQueue<>(Comparator.comparingInt(this::calculateManhattanDistance));
-        nextTiles.add(initialPosition);
-
-        Map<String, int[]> parentMap = new HashMap<>();
-        parentMap.put(Arrays.toString(initialPosition), null);
-
-        while(!nextTiles.isEmpty()) {
-            int[] currentTile = nextTiles.poll();
-            int currentRow = currentTile[1];
-            int currentCol = currentTile[0];
-
-            for (int[] goal : goalStates) {
-                if (currentRow == goal[1] && currentCol == goal[0]) {
-                    List<int[]> path = reconstructPath(parentMap, goal);
-                    return movementOfPath(path);
-                }
+        while (true) {
+            System.out.println("Trying depth limit: " + depth);
+            List<String> visited = new ArrayList<>();
+            parentMap.clear();
+            int[] foundGoal = depthLimitedSearch(initialPosition, 0, depth, visited);
+            if (foundGoal != null) {
+                List<int[]> path = reconstructPath(parentMap, foundGoal);
+                return movementOfPath(path);
             }
-
-            visitedTiles.add(currentTile);
-            List<int[]> neighbors = getNeighbors(currentTile);
-
-            for (int[] neighbor : neighbors) {
-                if (!hasVisited(visitedTiles, neighbor)) {
-                    nextTiles.add(neighbor);
-                    parentMap.put(Arrays.toString(neighbor) , currentTile);
-
-                }
-            }
-
+            depth++;  // Increase depth limit
         }
+    }
+
+    private int[] depthLimitedSearch(int[] currentPosition, int currentDepth, int depthLimit, List<String> visited) {
+        if (currentDepth > depthLimit) {
+            return null;
+        }
+
+        // Goal check
+        for (int[] goal : goalStates) {
+            if (Arrays.equals(currentPosition, goal)) {
+                System.out.println("Goal found at depth: " + currentDepth);
+                return goal;
+            }
+        }
+
+        visited.add(Arrays.toString(currentPosition));
+
+        // Explore neighbors
+        for (int[] neighbor : getNeighbors(currentPosition)) {
+            if (!visited.contains(Arrays.toString(neighbor))) {
+                // Record the parent of the neighbor for path reconstruction
+                parentMap.put(Arrays.toString(neighbor), currentPosition);
+
+                // Recur with increased depth
+                int[] foundGoal = depthLimitedSearch(neighbor, currentDepth + 1, depthLimit, visited);
+                if (foundGoal != null) {
+                    return foundGoal;
+                }
+            }
+        }
+
+        // Backtrack if no goal found at this depth
         return null;
     }
 
@@ -166,8 +168,4 @@ public class GBFS {
     public List<int[]> getPath() {
         return path;
     }
-
-
-
-
 }

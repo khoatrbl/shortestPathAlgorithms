@@ -123,7 +123,7 @@ public class Search {
     }
 
     // Implement the search algorithms
-    public void depthFirstSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
+    public void depthFirstSearch( List<int[]> goalStates, List<int[]> walls) {
         DFS dfs = new DFS(initialPosition, goalStates, grid, walls);
 
         List<String> moves = dfs.search();
@@ -140,7 +140,7 @@ public class Search {
         }
     }
 
-    public void breadthFirstSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
+    public void breadthFirstSearch(List<int[]> goalStates, List<int[]> walls) {
         BFS bfs = new BFS(initialPosition, goalStates, grid, walls);
 
         List<String> moves = bfs.search();
@@ -157,19 +157,55 @@ public class Search {
         }
     }
 
-    public void greedyBestFirstSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
-        // GBFS search logic here
-        System.out.println("Running GBFS...");
+    public void greedyBestFirstSearch(List<int[]> goalStates, List<int[]> walls) {
+        GBFS gbfs = new GBFS(grid, initialPosition, goalStates, walls);
+
+        List<String> moves = gbfs.search();
+        List<int[]> path = gbfs.getPath();
+
+        if (moves != null) {
+            System.out.println("Goal: " + Arrays.toString(path.getLast()));
+            System.out.println("Number of steps: " + moves.size());
+            for (String move : moves) {
+                System.out.print(move + " ");
+            }
+        } else {
+            System.out.println("No path found.");
+        }
     }
 
-    public void aStarSearch(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
-        // A* search logic here
-        System.out.println("Running A*...");
+    public void aStarSearch(List<int[]> goalStates, List<int[]> walls) {
+        AStar aStar= new AStar(grid, initialPosition, goalStates, walls);
+
+        List<String> moves = aStar.search();
+        List<int[]> path = aStar.getPath();
+
+        if (moves != null) {
+            System.out.println("Goal: " + Arrays.toString(path.getLast()));
+            System.out.println("Number of steps: " + moves.size());
+            for (String move : moves) {
+                System.out.print(move + " ");
+            }
+        } else {
+            System.out.println("No path found.");
+        }
     }
 
-    public void customSearch1(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {
-        // Custom search 1 logic here
-        System.out.println("Running Custom Search 1...");
+    public void customSearch1(List<int[]> goalStates, List<int[]> walls) {
+        IDDFS iddfs = new IDDFS(grid, initialPosition, goalStates, walls);
+
+        List<String> moves = iddfs.search();
+        List<int[]> path = iddfs.getPath();
+
+        if (moves != null) {
+            System.out.println("Goal: " + Arrays.toString(path.getLast()));
+            System.out.println("Number of steps: " + moves.size());
+            for (String move : moves) {
+                System.out.print(move + " ");
+            }
+        } else {
+            System.out.println("No path found.");
+        }
     }
 
     public void customSearch2(int[] gridSize, int[] initialState, List<int[]> goalStates, List<int[]> walls) {

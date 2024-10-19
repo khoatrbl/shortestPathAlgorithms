@@ -2,7 +2,7 @@ package treebasedsearch;
 
 import java.util.*;
 
-public class GBFS {
+public class AStar {
     private List<int[]> path;
 
     private String[][] grid;
@@ -10,7 +10,7 @@ public class GBFS {
     private List<int[]> goalStates;
     private List<int[]> walls;
 
-    public GBFS(String[][] grid, int[] initialPosition, List<int[]> goalStates, List<int[]> walls) {
+    public AStar(String[][] grid, int[] initialPosition, List<int[]> goalStates, List<int[]> walls) {
         this.grid = grid;
         this.initialPosition = initialPosition;
         this.goalStates = goalStates;
@@ -19,7 +19,14 @@ public class GBFS {
         this.path = new ArrayList<>();
     }
 
-    private int calculateManhattanDistance(int[] node) {
+    private int calculateTotalCost(int[] node) {
+        int hCost = calculateManhattanDistanceFromGoal(node);
+        int gCost = Math.abs(initialPosition[1] - node[1]) + Math.abs(initialPosition[0] - node[0]);
+
+        return hCost + gCost;
+    }
+
+    private int calculateManhattanDistanceFromGoal(int[] node) {
         int minDistance = Integer.MAX_VALUE;
 
         // Iterate over all goals and calculate the Manhattan distance to each
@@ -33,20 +40,28 @@ public class GBFS {
         return minDistance;  // Return the smallest distance to any goal
     }
 
-
     public List<String> search() {
-        List<int[]> visitedTiles = new ArrayList<>();
+        Map<String, Integer> gMap = new HashMap<>();
+        gMap.put(Arrays.toString(initialPosition), 0);
 
-        Queue<int[]> nextTiles = new PriorityQueue<>(Comparator.comparingInt(this::calculateManhattanDistance));
+        PriorityQueue<int[]> nextTiles = new PriorityQueue<>((pos1, pos2) -> {
+            int g1 = gMap.getOrDefault(Arrays.toString(pos1), Integer.MAX_VALUE);
+            int g2 = gMap.getOrDefault(Arrays.toString(pos2), Integer.MAX_VALUE);
+            return Integer.compare(calculateTotalCost(pos1), calculateTotalCost(pos2));
+        });
+
         nextTiles.add(initialPosition);
+
+        List<int[]> visited = new ArrayList<>();
 
         Map<String, int[]> parentMap = new HashMap<>();
         parentMap.put(Arrays.toString(initialPosition), null);
 
-        while(!nextTiles.isEmpty()) {
+        while (!nextTiles.isEmpty()) {
             int[] currentTile = nextTiles.poll();
             int currentRow = currentTile[1];
             int currentCol = currentTile[0];
+            String currentKey = Arrays.toString(currentTile);
 
             for (int[] goal : goalStates) {
                 if (currentRow == goal[1] && currentCol == goal[0]) {
@@ -55,17 +70,28 @@ public class GBFS {
                 }
             }
 
-            visitedTiles.add(currentTile);
+            visited.add(currentTile);
+
             List<int[]> neighbors = getNeighbors(currentTile);
 
             for (int[] neighbor : neighbors) {
-                if (!hasVisited(visitedTiles, neighbor)) {
-                    nextTiles.add(neighbor);
-                    parentMap.put(Arrays.toString(neighbor) , currentTile);
+                String neighborKey = Arrays.toString(neighbor);
+
+                if (!hasVisited(visited, neighbor)) {
+                    int tentativeG = gMap.get(currentKey) + 1;
+                    if (!gMap.containsKey(neighborKey) || tentativeG < gMap.get(neighborKey)) {
+                        // Update g(n) and parent
+                        gMap.put(neighborKey, tentativeG);
+                        parentMap.put(neighborKey, currentTile);
+
+                        // Add the neighbor to the priority queue
+                        nextTiles.add(neighbor);
+                    }
 
                 }
-            }
 
+
+            }
         }
         return null;
     }
@@ -136,6 +162,7 @@ public class GBFS {
         return false;
     }
 
+
     private List<int[]> getNeighbors(int[] position) {
         // UP, LEFT, DOWN, RIGHT
         int[][] directions = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
@@ -166,8 +193,4 @@ public class GBFS {
     public List<int[]> getPath() {
         return path;
     }
-
-
-
-
 }
