@@ -17,7 +17,7 @@ public class Main {
 //        String filename = args[0];
 //        String method = args[1];
 
-        String filename = "E:\\Java Projects\\TreeBasedSearch\\src\\main\\java\\treebasedsearch\\RobotNav-test.txt";
+        String filename = "E:\\Java Projects\\TreeBasedSearch\\src\\main\\java\\treebasedsearch\\map7.txt";
         String method = "cus1";
 
 
@@ -33,29 +33,35 @@ public class Main {
             Search search = new Search(gridDimension, initialPosition, goalStates, walls);
             search.printGrid();
 
+            long startTime = System.nanoTime();
             switch (method.toUpperCase()) {
                 case "DFS":
                     System.out.println(filename + " " + method);
                     search.depthFirstSearch(goalStates, walls);
+                    runAndMeasureTime(startTime);
                     break;
                 case "BFS":
                     System.out.println(filename + " " + method);
                     search.breadthFirstSearch(goalStates, walls);
+                    runAndMeasureTime(startTime);
                     break;
                 case "GBFS":
                     System.out.println(filename + " " + method);
                     search.greedyBestFirstSearch(goalStates, walls);
+                    runAndMeasureTime(startTime);
                     break;
                 case "AS":
                     System.out.println(filename + " " + method);
                     search.aStarSearch(goalStates, walls);
+                    runAndMeasureTime(startTime);
                     break;
                 case "CUS1":
                     System.out.println(filename + " " + method);
                     search.customSearch1(goalStates, walls);
+                    runAndMeasureTime(startTime);
                     break;
                 case "CUS2":
-
+                    runAndMeasureTime(startTime);
                     break;
                 default:
                     System.out.println("Error: Unknown method '" + method + "'");
@@ -68,7 +74,13 @@ public class Main {
         }
     }
 
-    //
+    // Method to run the search and print out the time taken
+    public static void runAndMeasureTime(long startTime) {
+        long endTime = System.nanoTime();  // End timer
+
+        long duration = endTime - startTime;  // Calculate time taken
+        System.out.println("Time taken: " + duration / 1_000_000.0 + " ms");
+    }
 
     // Helper method to read file into list of lines
     private static List<String> readFile(String filename) throws IOException {
