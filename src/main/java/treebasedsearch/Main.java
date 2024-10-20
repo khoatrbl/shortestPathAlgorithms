@@ -8,17 +8,17 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-//        if (args.length != 2) {
-//            System.out.println("Usage: java search <filename> <method>");
-//            System.exit(1);
-//        }
-//
-//        //Extract filename and method
-//        String filename = args[0];
-//        String method = args[1];
+        if (args.length != 2) {
+            System.out.println("Usage: java search <filename> <method>");
+            System.exit(1);
+        }
 
-        String filename = "E:\\Java Projects\\TreeBasedSearch\\src\\main\\java\\treebasedsearch\\map7.txt";
-        String method = "cus1";
+        //Extract filename and method
+        String filename = args[0];
+        String method = args[1];
+
+//        String filename = "E:\\Java Projects\\TreeBasedSearch\\src\\main\\java\\treebasedsearch\\map4.txt";
+//        String method = "dfs";
 
 
         // Read the input file

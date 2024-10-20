@@ -22,8 +22,8 @@ public class DFS {
         Stack<int[]> nextTiles = new Stack<>();
         nextTiles.add(currentPosition);
 
-        List<int[]> visitedTiles = new ArrayList<>();
-        visitedTiles.add(currentPosition);
+        Set<String> visitedTiles = new HashSet<>();
+        visitedTiles.add(Arrays.toString(currentPosition));
 
         Map<String, int[]> parentMap = new HashMap<>();
         parentMap.put(Arrays.toString(currentPosition), null);
@@ -43,10 +43,12 @@ public class DFS {
             List<int[]> neighbors = getNeighbors(currentTile);
 
             for (int[] neighbor : neighbors) {
-                if (!hasVisited(visitedTiles, neighbor)) {
+                String neighborKey = Arrays.toString(neighbor);
+
+                if (!visitedTiles.contains(neighborKey)) {
                     nextTiles.push(neighbor);
-                    visitedTiles.add(neighbor);
-                    parentMap.put(Arrays.toString(neighbor) , currentTile);
+                    visitedTiles.add(neighborKey);
+                    parentMap.put(neighborKey, currentTile);
                 }
             }
         }
@@ -103,22 +105,13 @@ public class DFS {
             int width = wall[2];
             int height = wall[3];
 
-            if (currentRow >= startRow && currentRow < startRow + width && currentCol >= startCol && currentCol < startCol + height) {
+            if (currentRow >= startRow && currentRow < startRow + height && currentCol >= startCol && currentCol < startCol + width) {
                 return false;
             }
         }
         return true;
     }
 
-    // Check if a location is already visited (specified for array usage)
-    private boolean hasVisited(List<int[]> visitedList, int[] location) {
-        for (int[] visited : visitedList) {
-            if (Arrays.equals(visited, location)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private List<int[]> getNeighbors(int[] position) {
         // UP, LEFT, DOWN, RIGHT
@@ -133,7 +126,6 @@ public class DFS {
         for (int[] dir : directions) {
             neighbors.add(new int[] {col + dir[0], row + dir[1]});
         }
-
 
         List<int[]> validNeighbors = new ArrayList<>();
 

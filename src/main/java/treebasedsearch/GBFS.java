@@ -119,7 +119,7 @@ public class GBFS {
             int width = wall[2];
             int height = wall[3];
 
-            if (currentRow >= startRow && currentRow < startRow + width && currentCol >= startCol && currentCol < startCol + height) {
+            if (currentRow >= startRow && currentRow < startRow + height && currentCol >= startCol && currentCol < startCol + width) {
                 return false;
             }
         }
